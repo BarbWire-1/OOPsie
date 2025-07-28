@@ -1,4 +1,5 @@
 // TODO add abstract class!
+// TODO no declaration of provate method!!! remove that
 
 // TODO clean this monter - refactor, modules => eventDelegation!!!!!!
 // === IMPORTS ===

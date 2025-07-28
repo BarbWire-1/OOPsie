@@ -5,10 +5,9 @@ const syntaxExample =`ClassName:
     s staticProp: boolean = true
 		composedElement: AnotherClassName
   methods:
-    publicMethod(message: string){
+    publicMethod(message: string)
 			console.log( this.#privateProp, message )// indent body!
 			this.publicProp += 1
-			}
     p privateMethod(secretCode: number)
     a abstractMethod(times: number, flag: boolean)
 
@@ -19,7 +18,7 @@ SubClassName > ClassName:
     s staticSubProp: number = 999
   methods:
     publicSubMethod(value: number): boolean
-    p privateSubMethod()
+    p privateSubMethod
     s staticSubMethod(config: object)
 
 AnotherClassName:
@@ -27,9 +26,9 @@ AnotherClassName:
     publicRef: className
     s staticConfigFlag: boolean = false
   methods:
-    run()
-    p setup()
-    a createDefault(): anotherClassName
+    run
+    p setup
+    a createDefault(el: AnotherClassName)
 
 schema schemaName:
   props:
@@ -117,13 +116,13 @@ Game:
 		players: Player[] = []
 		activePlayer: Player = null
 	methods:
-		start()
-		stop()
+		start
+		stop
 		switchActivePlayer(index: number)
 
 functions:
-	init()
-	shutdown()
+	init
+	shutdown
 	`
 const game2 = `PlayerA:
 	props:
@@ -134,11 +133,11 @@ const game2 = `PlayerA:
 			y: number = 0
 			}
 	methods:
-		a start()
+		a start
 			console.log(\`Starting player with health \${ this.health }' \`)
-		stop()
+		stop
 			console.log(\`Stopping player with health \${ this.health - 20 } \`)
-		p update()
+		p update
 			this.health -= 1
 
 AnimationEngine:
@@ -188,13 +187,13 @@ Player:
 	methods:
 		move(direction: string)
 		takeDamage(amount: number)
-		isAlive()
+		isAlive
 
 Warrior > Player:
 	props:
 		strength: number = 10
 	methods:
-		fight()
+		fight
 
 Archer > Player:
 	props:
@@ -215,13 +214,13 @@ Game:
 		players: Player[] = []
 		activePlayer: Player = null
 	methods:
-		start()
-		stop()
+		start
+		stop
 		switchActivePlayer(index: number)
 
 functions:
-	init()
-	shutdown()
+	init
+	shutdown
 
 schema WeaponType:
 	props:
