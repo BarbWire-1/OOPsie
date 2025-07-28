@@ -1,0 +1,720 @@
+/* ============================
+   FILE: themes.css
+   ----------------------------
+   Theme color variables per body class
+============================ */
+
+/* === Theme: Pastel Dark (variant 1) === */
+body.theme-neon-dark {
+	--bg: #1e1e1e;
+	--bg-blend: #1e1e1e22;
+	--text: #eee;
+	--surface: #2d2d2d;
+	--border: #555;
+	--accent: #4e3653;
+	--accent-hover: #d910c2;
+	--heading: #fff;
+
+	/* Prism tokens with unique distinct colors */
+	--kw: #ff6f91;
+	/* bright pink */
+	--atrule: #00bfff;
+	/* deep sky blue */
+	--selector: #ffa500;
+	/* orange */
+	--important: #ff4500;
+	/* orangered */
+	--bold: #7fff00;
+	/* chartreuse */
+
+	--function: #40e0d0;
+	/* turquoise */
+	--boolean: #ff1493;
+	/* deep pink */
+	--constant: #00ff7f;
+	/* spring green */
+	--symbol: #8a2be2;
+	/* blue violet */
+
+	--property: #ffd700;
+	/* gold */
+	--attr-name: #ff69b4;
+	/* hot pink */
+	--attribute: #ba55d3;
+	/* medium orchid */
+
+	--string: #32cd32;
+	/* lime green */
+	--char: #1e90ff;
+	/* dodger blue */
+	--attr-value: #ff6347;
+	/* tomato */
+	--regex: #ff8c00;
+	/* dark orange */
+
+	--number: #00ced1;
+	/* dark turquoise */
+
+	--class-name: #ff00ff;
+	/* magenta */
+	--class: #adff2f;
+	/* green yellow */
+	--class-style: italic;
+
+	--comment: #808080;
+	/* gray */
+	--comment-style: italic;
+	--prolog: #708090;
+	/* slate gray */
+	--doctype: #778899;
+	/* light slate gray */
+	--cdata: #2f4f4f;
+	/* dark slate gray */
+
+	--operator: #00fa9a;
+	/* medium spring green */
+	--entity: #7b68ee;
+	/* medium slate blue */
+	--url: #1e90ff;
+	/* dodger blue */
+	--variable: #ff4500;
+	/* orangered */
+
+	--punctuation: #ffffff;
+	/* white */
+}
+
+/* === Theme: Pastel Dark (variant 2) === */
+body.theme-pastel-dark {
+	--bg: #1e1e1eee;
+	--text: #eee;
+	--surface: #2d2d2d;
+	--border: #555;
+	--accent: #4e3653;
+	--accent-hover: #d910c2;
+	--heading: #fff;
+
+	/* Prism token colors — all distinct, soft pastels */
+	--kw: #afcae3;
+	/* your original keyword blue */
+	--atrule: #b4a0d4;
+	/* pastel purple (distinct from kw) */
+	--selector: #a7c7e7;
+	/* your selector light blue */
+	--important: #d181b4;
+	/* soft pink */
+	--bold: #c3a6e8;
+	/* pastel lavender */
+
+	--function: #f1a8ff;
+	/* your original function pink */
+	--boolean: #ff8c8c;
+	/* your original boolean red */
+	--constant: #e0a2a2;
+	/* pastel coral (distinct from boolean) */
+	--symbol: #a9baff;
+	/* pastel periwinkle */
+
+	--property: #fcb0f6;
+	/* your original property pink */
+	--attr-name: #f7c59f;
+	/* pastel orange */
+	--attribute: #f4b8f8;
+	/* pastel magenta */
+
+	--string: #f7f9d3;
+	/* your original string pale yellow */
+	--char: #d6f7d1;
+	/* pastel green */
+	--attr-value: #f7d6bf;
+	/* your attr-value peach */
+	--regex: #f4a261;
+	/* your regex orange */
+
+	--number: #1db5e8;
+	/* your number bright blue */
+
+	--class-name: #97f597;
+	/* your original class green */
+	--class: #8de79d;
+	/* a slightly different pastel green */
+	--class-style: italic;
+
+	--comment: gray;
+	/* your comment */
+	--comment-style: italic;
+	--prolog: #999999;
+	/* slightly lighter gray */
+	--doctype: #888888;
+	/* another shade of gray */
+	--cdata: #777777;
+	/* darker gray */
+
+	--operator: #eda0e6;
+	/* your operator pink */
+	--entity: #c9b1de;
+	/* pastel lilac */
+	--url: #8ab4f8;
+	/* your original url blue */
+	--variable: #d4a0e0;
+	/* pastel violet */
+
+	--punctuation: #d4d4d4;
+	/* your punctuation */
+}
+
+/* === Theme: Light === */
+body.theme-light {
+	--bg: #ffffff;
+	--text: #24292e;
+	--surface: #f6f8fa;
+	--border: #d0d7de;
+	--accent: #005cc5;
+	--accent-hover: #22863a;
+	--heading: #24292e;
+
+	--kw: #005cc5;
+	--kw-weight: 600;
+	--atrule: #d73a49;
+	--selector: #6f42c1;
+	--important: #b31d28;
+	--bold: #6f42c1;
+
+	--function: #6f42c1;
+
+	--boolean: #d73a49;
+	--constant: #005cc5;
+	--symbol: #e36209;
+
+	--property: #e36209;
+	--attr-name: #6f42c1;
+	--attribute: #6f42c1;
+
+	--string: #032f62;
+	--char: #0366d6;
+	--attr-value: #032f62;
+	--regex: #e36209;
+
+	--number: #c50097;
+
+	--class-name: #17a639;
+	--class: #17a639;
+	--class-style: italic;
+
+	--comment: #6a737d;
+	--comment-style: italic;
+	--prolog: #6a737d;
+	--doctype: #6a737d;
+	--cdata: #6a737d;
+
+	--operator: #d73a49;
+	--entity: #22863a;
+	--url: #0366d6;
+	--variable: #6f42c1;
+
+	--punctuation: #24292e;
+
+	--btn-text: white;
+}
+
+/* === Theme: Solarized === */
+body.theme-solarized {
+	--bg: #002b36ee;
+	--text: #93a1a1;
+	--surface: #073642;
+	--border: #586e75;
+	--accent: #268bd2;
+	--accent-hover: #859900;
+	--heading: #93a1a1;
+
+	--kw: #268bd2;
+	--kw-weight: 600;
+	--atrule: #d33682;
+	--selector: #cb4b16;
+	--important: #dc322f;
+	--bold: #b58900;
+
+	--function: #b58900;
+
+	--boolean: #d33682;
+	--constant: #6c71c4;
+	--symbol: #859900;
+
+	--property: #cb4b16;
+	--attr-name: #93a1a1;
+	--attribute: #93a1a1;
+
+	--string: #2aa198;
+	--char: #268bd2;
+	--attr-value: #586e75;
+	--regex: #859900;
+
+	--number: #6c71c4;
+
+	--class-name: #859900;
+	--class: #859900;
+	--class-style: italic;
+
+	--comment: #586e75;
+	--comment-style: italic;
+	--prolog: #586e75;
+	--doctype: #586e75;
+	--cdata: #586e75;
+
+	--operator: #d33682;
+	--entity: #268bd2;
+	--url: #268bd2;
+	--variable: #93a1a1;
+
+	--punctuation: #839496;
+
+	--btn-text: white;
+}
+
+/* ============================
+   FILE: prism-tokens.css
+   ----------------------------
+   Syntax Highlighting - Prism.js tokens
+   Use CSS variables for colors from themes
+============================ */
+
+.token.keyword {
+	color: var(--kw);
+	font-weight: var(--kw-weight);
+}
+
+.token.atrule {
+	color: var(--atrule);
+}
+
+.token.selector {
+	color: var(--selector);
+}
+
+.token.important {
+	color: var(--important);
+}
+
+.token.bold {
+	font-weight: bold;
+	color: var(--bold);
+}
+
+.token.function,
+.token.function-name {
+	color: var(--function);
+}
+
+.token.boolean {
+	color: var(--boolean);
+}
+
+.token.constant {
+	color: var(--constant);
+}
+
+.token.symbol {
+	color: var(--symbol);
+}
+
+.token.property {
+	color: var(--property);
+}
+
+.token.attr-name {
+	color: var(--attr-name);
+}
+
+.token.attribute {
+	color: var(--attribute);
+}
+
+.token.string {
+	color: var(--string);
+}
+
+.token.char {
+	color: var(--char);
+}
+
+.token.attr-value {
+	color: var(--attr-value);
+}
+
+.token.regex {
+	color: var(--regex);
+}
+
+.token.number {
+	color: var(--number);
+}
+
+.token.class-name {
+	color: var(--class-name);
+	font-style: var(--class-style);
+	font-weight: bold;
+}
+
+.token.class {
+	color: var(--class);
+	font-style: italic;
+	font-weight: bold;
+}
+
+.token.comment {
+	color: var(--comment);
+	font-style: var(--comment-style);
+}
+
+.token.prolog {
+	color: var(--prolog);
+	font-style: italic;
+}
+
+.token.doctype {
+	color: var(--doctype);
+	font-style: italic;
+}
+
+.token.cdata {
+	color: var(--cdata);
+	font-style: italic;
+}
+
+.token.operator {
+	color: var(--operator);
+}
+
+.token.entity {
+	color: var(--entity);
+}
+
+.token.url {
+	color: var(--url);
+}
+
+.token.variable {
+	color: var(--variable);
+}
+
+.token.punctuation {
+	color: var(--punctuation);
+}
+
+/* Base token fallback */
+
+.token {
+	color: var(--text);
+	transition: color 0.2s ease;
+}
+
+
+/* ============================
+   FILE: base.css
+   ----------------------------
+   Base styles, typography, layout
+============================ */
+
+body {
+	font-family: monospace;
+
+	color: var(--text);
+	margin: 2em auto;
+	padding: 1em;
+	transition: background 0.3s ease, color 0.3s ease;
+	overflow-x: hidden;
+	background-image: url("../blueprint_bw.png");
+	background-repeat: no-repeat, repeat;
+	background-size: cover;
+	background-color: var(--bg);
+	padding: 50px;
+	background-blend-mode: darken;
+
+}
+
+
+
+h1,
+h2 {
+	font-family: sans-serif;
+	color: var(--heading);
+}
+
+
+textarea,
+pre {
+	position: relative;
+	box-sizing: border-box;
+	font-family: monospace;
+	/* font-size: 1.5em !important; */
+	margin-bottom: 1em;
+	white-space: pre;
+	margin: 10px;
+
+	resize: vertical;
+	tab-size: 2;
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 1em;
+	max-height: 500px;
+	/* width:70%; */
+	overflow-y: auto;
+	background: var(--surface);
+	font-size: 1.5em;
+
+	transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+	width: calc(100% - 20px);
+}
+
+pre {
+	max-height: 400px;
+
+}
+
+textarea[readonly] {
+	pointer-events: none;
+	/* font-size: 1em !important; */
+}
+
+pre[class*="language-"],
+code[class*="language-"] {
+	/* font-family: "Fira Code", monospace !important; */
+	/* font-size: 1em !important; */
+}
+
+/* ============================
+   FILE: buttons.css
+   ----------------------------
+   Buttons and button containers
+============================ */
+
+button {
+	font-size: 1.2em;
+	padding: 0.5em 1em;
+	cursor: pointer;
+	background-color: var(--accent);
+	color: var(--btn-text);
+	border: none;
+	border-radius: 6px;
+	margin-top: 20px;
+	transition: background 0.3s ease, color 0.3s ease;
+	width: 100%
+}
+
+button:hover {
+	background-color: var(--accent-hover);
+}
+
+.button-group {
+	display: flex;
+	flex-wrap: wrap;
+
+
+	margin-bottom: 1em;
+}
+
+/* ============================
+   FILE: summary-details.css
+   ----------------------------
+   Summary and details styles
+============================ */
+
+summary {
+	font-weight: bold;
+	/* font-size: 1.25em; */
+	cursor: pointer;
+	outline: none;
+	/* Optional: remove focus outline */
+	user-select: none;
+	margin: 10px;
+}
+
+details {
+	width: 100%;
+	/* font-size: 1.5em; */
+	/* full width */
+}
+
+/* ============================
+   FILE: diagram.css
+   ----------------------------
+   Diagram container styles
+============================ */
+
+#diagram {
+	width: calc(100% -240px);
+	padding: 20px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	margin-top: 1em;
+	overflow-x: auto;
+	color: var(--text);
+	margin-left: 10px;
+}
+
+
+/* ============================
+   FILE: flex-container.css
+   ----------------------------
+   Flex container and scrollbar styles
+============================ */
+
+/* Flex container fix (remove colon typo) */
+.flex-container {
+	width: calc(100%);
+	max-height: 200px;
+}
+
+/* Your original flex container styles */
+.flex-container {
+	display: inline-block;
+	/* stack children vertically */
+	margin-bottom: 1rem;
+	/* spacing between containers */
+}
+
+.flex-item {
+	margin-bottom: 1rem;
+	/* spacing between items inside container */
+}
+
+/* Scrollbar styling for all themes */
+body.theme-pastel-dark ::-webkit-scrollbar,
+body.theme-light ::-webkit-scrollbar,
+body.theme-solarized ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+body.theme-pastel-dark ::-webkit-scrollbar-track,
+body.theme-light ::-webkit-scrollbar-track,
+body.theme-solarized ::-webkit-scrollbar-track {
+	background: var(--surface);
+	border-radius: 6px;
+}
+
+body.theme-pastel-dark ::-webkit-scrollbar-thumb,
+body.theme-light ::-webkit-scrollbar-thumb,
+body.theme-solarized ::-webkit-scrollbar-thumb {
+	background-color: var(--accent);
+	border-radius: 6px;
+	border: 2px solid var(--surface);
+	transition: background-color 0.3s ease;
+}
+
+body.theme-pastel-dark ::-webkit-scrollbar-thumb:hover,
+body.theme-light ::-webkit-scrollbar-thumb:hover,
+body.theme-solarized ::-webkit-scrollbar-thumb:hover {
+	background-color: var(--accent-hover);
+}
+
+/* Firefox scrollbar */
+body.theme-pastel-dark,
+body.theme-light,
+body.theme-solarized {
+	scrollbar-width: thin;
+	scrollbar-color: var(--accent-hover) var(--surface);
+}
+
+textarea {
+	font-family: monospace;
+	white-space: pre;
+	tab-size: 2;
+	min-height: 500px;
+}
+
+/* Fullscreen style for pre */
+.fullscreen-pre {
+	position: fixed !important;
+	top: 160px !important;
+	left: 45px !important;
+	width: calc(100vw - 90px) !important;
+	height: calc(100vh - 210px) !important;
+	max-height: none !important;
+	overflow: auto !important;
+	z-index: 1000 !important;
+
+
+	padding: 1rem !important;
+	margin: 0 !important;
+	font-size: 1.1rem !important;
+	box-shadow: 0 0 20px #000 !important;
+	cursor: zoom-out !important;
+}
+
+/* normal state cursor */
+pre {
+	cursor: zoom-in;
+}
+
+pre.tooltip {
+	position: relative;
+	cursor: help;
+}
+
+pre.tooltip:hover::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-bottom: 6px;
+	padding: 6px 10px;
+	background: rgba(0, 0, 0, 0.8);
+	color: #fff;
+	font-size: 12px;
+	border-radius: 4px;
+	white-space: nowrap;
+	pointer-events: none;
+	opacity: 1;
+	transition: opacity 0.3s ease;
+	z-index: 1000;
+}
+
+pre.tooltip::after {
+	opacity: 0;
+	pointer-events: none;
+	content: '';
+}
+
+.main-wrapper {
+	display: flex;
+	padding: 20px;
+	height: 80vh;
+	/* background: rgba(255, 255, 0, 0.133) */
+}
+
+.left-wrapper {
+	width: 80vw;
+	overflow-y: auto;
+	padding: 20px;
+	/* background: #005cc53c */
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 1em;
+	margin: 10px;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.right-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 20vw;
+	overflow-y: auto;
+	/* background: #892be235; */
+	padding: 20px;
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 1em;
+	margin-left: 20px;
+}
+.right-wrapper > button,select {
+	margin: 20px;
+}
+.mermaid{
+	width: calc(100% - 100px)
+}

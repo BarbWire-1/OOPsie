@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>YAML to Mermaid Diagram + JSON + JS Output</title>
+	<link rel="stylesheet" href="./src/style.css">
+
+	<!-- Prism CSS for default (light) theme -->
+	<!-- USING OWN THEMES
+     <link id="prism-theme" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+-->
+	<!-- Prism JS  Highlight semantics in code-->
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+	<!--
+     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+-->
+
+	<!-- parses yaml input -->
+	<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+	<!-- interprets mermaid dsl to UML -->
+	<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+	<script type="module" src="./src/index.js"></script>
+
+</head>
+
+<body class="theme-pastel-dark">
+	<h1>BARBL to Mermaid Diagram + JSON + JS Output</h1>
+	<div class="main-wrapper">
+
+		<!-- LEFT: content -->
+		<div class="left-wrapper">
+
+			<p>Paste full BARBL below, then click "Generate Outputs".</p>
+
+			<textarea id="dsl-input" spellcheck="false"></textarea>
+
+			<div class="flex-container">
+				<div class="flex-item">
+					<details>
+						<summary>Parsed JSON</summary>
+						<pre id="json-output"></pre>
+					</details>
+				</div>
+
+				<div class="flex-item">
+					<details>
+						<summary>Generated JS Code</summary>
+						<pre id="js-output" class="language-javascript"><code></code></pre>
+					</details>
+				</div>
+
+				<div class="flex-item">
+					<details>
+						<summary>Generated Mermaid Code</summary>
+						<pre id="mermaid-code-output"></pre>
+					</details>
+				</div>
+
+				<div class="flex-item">
+					<details>
+						<summary>Mermaid Diagram</summary>
+						<div id="diagram"></div>
+					</details>
+				</div>
+			</div>
+		</div>
+
+		<!-- RIGHT: controls -->
+		<div class="right-wrapper">
+			<label>
+				<input type="checkbox" id="live-update-checkbox" checked />
+				Live Update
+			</label>
+
+			<label for="example-select">Choose Example:</label>
+			<select id="example-select"></select>
+
+			<label for="theme-select">Choose Theme:</label>
+			<select id="theme-select">
+				<option value="theme-pastel-dark">Pastel Dark</option>
+				<option value="theme-light">Light</option>
+				<option value="theme-solarized">Solarized</option>
+			</select>
+
+			<div class="button-group">
+				<button id="generate-out-btn">Generate Codes</button>
+				<button id="download-md-btn">Download Codes</button>
+				<button id="download-svg-btn">Download Diagram</button>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+
+
+</html>
