@@ -1,8 +1,8 @@
-function generateJS(data, options = { enableLogging: true }) {
+function generateJS(data,  enableLogging= true ) {
 	const lines = [];
 
 	// === Logger scaffold ===
-	if (options.enableLogging) {
+	if (enableLogging) {
 		const logger = [
 			`let logger = true;`,
 			`function log(message, ...args) {`,
@@ -90,7 +90,7 @@ function generateJS(data, options = { enableLogging: true }) {
 		}
 
 		const body = [];
-		if (options.enableLogging) {
+		if (enableLogging) {
 			body.push(`\t\tlog("Calling ${name} from ${className}"${logParamStr});`);
 		}
 		body.push(...bodyLines.map(line => `\t\t${line}`));
@@ -141,7 +141,7 @@ function generateJS(data, options = { enableLogging: true }) {
 			: [ `\t// TODO Implement ${name}` ];
 
 		const result = [ `function ${name}(${paramStr}) {` ];
-		if (options.enableLogging) {
+		if (enableLogging) {
 			result.push(`\tlog("Calling ${name} from global function"${logParamStr});`);
 		}
 		result.push(...body, `}\n`);

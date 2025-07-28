@@ -1,88 +1,89 @@
+// TODO add abstract class!
 
-// TODO implement enableLogging as a flag for JS
-
+// TODO clean this monter - refactor, modules => eventDelegation!!!!!!
 // === IMPORTS ===
 import { generateMermaid } from "./generateMermaid.js";
 import { generateJS } from "./generateJS.js";
 import { parseDSL } from "./dsl/parseDSL.js";
 import { examples } from './testSketches/exampleSketches.js';
+
 mermaid.initialize({ startOnLoad: false });
 
 
-// === STATE / DOM REFERENCES ===
+// === DOM ELEMENTS ===
+const DOM = {
+	themeSelect: document.getElementById("theme-select"),
+	exampleSelect: document.getElementById("example-select"),
+	dslInput: document.getElementById("dsl-input"),
+	jsonOutput: document.getElementById("json-output"),
+	mermaidCodeOutput: document.getElementById("mermaid-code-output"),
+	jsOutputCode: document.querySelector("#js-output code"),
+	diagramDiv: document.getElementById("diagram"),
+	liveUpdateCheckbox: document.getElementById("live-update-checkbox"),
+	clearAllBtn: document.getElementById("clear-all-btn"),
+	downloadMdBtn: document.getElementById("download-md-btn"),
+	downloadSvgBtn: document.getElementById("download-svg-btn"),
+	clearedNotice: document.getElementById("cleared-notice"),
+	enableLogsBtn: document.getElementById('addLogs'),
+	preElements: document.querySelectorAll("pre"),
+	generateOutBtn: document.getElementById('generate-out-btn'),
+};
 
-
-// Cache DOM elements once here:
-const themeSelect = document.getElementById("theme-select");
-const exampleSelect = document.getElementById("example-select");
-const dslInput = document.getElementById("dsl-input");
-const jsonOutput = document.getElementById("json-output");
-const mermaidCodeOutput = document.getElementById("mermaid-code-output");
-const jsOutput = document.getElementById("js-output");
-const jsOutputCode = jsOutput.querySelector("code");
-const diagramDiv = document.getElementById("diagram");
-const liveUpdateCheckbox = document.getElementById("live-update-checkbox");
-const clearAllBtn = document.getElementById("clear-all-btn");
-const downloadMdBtn = document.getElementById("download-md-btn");
-const downloadSvgBtn = document.getElementById("download-svg-btn");
-const clearedNotice = document.getElementById("cleared-notice");
-
-const preElements = document.querySelectorAll("pre");
-
-const enableLogsBtn = document.getElementById('addLogs');
-
-
-
-
-// === STATE FLAGS ===
+// === STATE ===
 let userEdited = false;
-let hasClearedAfterEdit = false;
-let debounceTimer;
+let debounceTimer = null;
 let enableLogging = true;
-// enableLogsBtn.addEventListener('change', () => {
-// 	enableLogging = enableLogsBtn.checked;
-// 	console.log(enableLogging)
-// 	updateAllOutputs();
-// }
-// )
-
-// === INIT EXAMPLES SELECT OPTIONS ===
-examples.forEach((example, index) => {
-	const option = document.createElement("option");
-	option.value = index;
-	option.textContent = `Example ${index + 1}`;
-	exampleSelect.appendChild(option);
-});
-
-const defaultExampleIndex = 0;
-dslInput.value = examples[ defaultExampleIndex ];
-exampleSelect.value = defaultExampleIndex;
-updateAllOutputs();
 
 
-// === OUTPUT RENDERING FUNCTIONS ===
+// === INITIALIZATION ===
+function init() {
+	setupExamples();
+	setupEventListeners();
+	DOM.dslInput.value = examples[ 0 ];
+	DOM.exampleSelect.value = 0;
+	updateAllOutputs();
+	setupPreElements();
+}
+
+function setupExamples() {
+	examples.forEach((ex, i) => {
+		const option = document.createElement("option");
+		option.value = i;
+		option.textContent = `Example ${i + 1}`;
+		DOM.exampleSelect.appendChild(option);
+	});
+}
+
+function setupPreElements() {
+	DOM.preElements.forEach(pre => {
+		pre.title = "Double-click to zoom in/out";
+	});
+}
+
+
+// === OUTPUT RENDERING ===
 function renderJSON(parsedDSL) {
-	jsonOutput.textContent = JSON.stringify(parsedDSL, null, 2);
+	DOM.jsonOutput.textContent = JSON.stringify(parsedDSL, null, 2);
 }
 
 async function renderDiagram(mermaidCode) {
 	if (!mermaidCode.trim()) {
-		diagramDiv.innerHTML = "";
+		DOM.diagramDiv.innerHTML = "";
 		return;
 	}
 	try {
 		const { svg, bindFunctions } = await mermaid.render('generatedDiagram', mermaidCode);
-		diagramDiv.innerHTML = svg;
-		if (bindFunctions) bindFunctions(diagramDiv);
+		DOM.diagramDiv.innerHTML = svg;
+		if (bindFunctions) bindFunctions(DOM.diagramDiv);
 	} catch {
-		// Ignore Mermaid rendering errors silently
+		// silently ignore errors
 	}
 }
 
 function renderJS(parsedDSL) {
-	const jsCode = generateJS(parsedDSL);
-	jsOutputCode.textContent = jsCode;
-	Prism.highlightElement(jsOutputCode);
+	const jsCode = generateJS(parsedDSL, enableLogging);
+	DOM.jsOutputCode.textContent = jsCode;
+	Prism.highlightElement(DOM.jsOutputCode);
 	return jsCode;
 }
 
@@ -91,7 +92,7 @@ function renderJS(parsedDSL) {
 function updateAllOutputs() {
 	clearError();
 
-	const dslText = dslInput.value;
+	const dslText = DOM.dslInput.value;
 
 	try {
 		const parsedDSL = parseDSL(dslText);
@@ -100,13 +101,10 @@ function updateAllOutputs() {
 		const jsCode = renderJS(parsedDSL);
 		const mermaidCode = generateMermaid(parsedDSL);
 
-		mermaidCodeOutput.textContent = mermaidCode;
+		DOM.mermaidCodeOutput.textContent = mermaidCode;
 
-		if (mermaidCode.trim()) {
-			renderDiagram(mermaidCode);
-		} else {
-			diagramDiv.innerHTML = "";
-		}
+		if (mermaidCode.trim()) renderDiagram(mermaidCode);
+		else DOM.diagramDiv.innerHTML = "";
 	} catch (err) {
 		console.error("Parse error:", err);
 		setError(err.message);
@@ -114,118 +112,99 @@ function updateAllOutputs() {
 }
 
 
-// === OUTPUT CLEARING ON USER EDIT ===
-function clearOutputsBeforeUserUpdate() {
-	jsonOutput.textContent = "";
-	mermaidCodeOutput.textContent = "";
-	jsOutputCode.textContent = "";
-	diagramDiv.innerHTML = "";
+// === OUTPUT CLEARING ===
+function clearOutputs() {
+	DOM.jsonOutput.textContent = "";
+	DOM.mermaidCodeOutput.textContent = "";
+	DOM.jsOutputCode.textContent = "";
+	DOM.diagramDiv.innerHTML = "";
 
-	if (clearedNotice) {
-		clearedNotice.style.display = "block";
-		setTimeout(() => {
-			clearedNotice.style.display = "none";
-		}, 1500);
+	if (DOM.clearedNotice) {
+		DOM.clearedNotice.style.display = "block";
+		setTimeout(() => DOM.clearedNotice.style.display = "none", 1500);
 	}
 }
 
 function clearAll() {
-	// Clear the DSL input textarea
-	dslInput.value = "";
-
-	// Clear outputs
-	jsonOutput.textContent = "";
-	mermaidCodeOutput.textContent = "";
-	jsOutputCode.textContent = "";
-	diagramDiv.innerHTML = "";
-
-	// Clear errors
+	DOM.dslInput.value = "";
+	clearOutputs();
 	clearError();
-
-	// Reset state flags
 	userEdited = false;
-	hasClearedAfterEdit = false;
-
-	// Hide cleared notice if visible
-	if (clearedNotice) {
-		clearedNotice.style.display = "none";
-	}
+	if (DOM.clearedNotice) DOM.clearedNotice.style.display = "none";
 }
 
 
 // === ERROR HANDLING ===
 function setError(message) {
-	jsonOutput.textContent = "Invalid DSL: " + message;
-	diagramDiv.innerHTML = "";
-	dslInput.classList.add("error");
+	DOM.jsonOutput.textContent = "Invalid DSL: " + message;
+	DOM.diagramDiv.innerHTML = "";
+	DOM.dslInput.classList.add("error");
 }
 
 function clearError() {
-	dslInput.classList.remove("error");
+	DOM.dslInput.classList.remove("error");
 }
 
 
-// === UI EVENT LISTENERS ===
+// === EVENT LISTENERS SETUP ===
+function setupEventListeners() {
+	DOM.enableLogsBtn.addEventListener('change', () => {
+		enableLogging = DOM.enableLogsBtn.checked;
+		console.log('Enable logging:', enableLogging);
+		updateAllOutputs();
+	});
 
-// DSL input typing
-dslInput.addEventListener("input", () => {
+	DOM.dslInput.addEventListener("input", onDslInputChange);
+	DOM.dslInput.addEventListener("keydown", onDslInputKeyDown);
+	DOM.exampleSelect.addEventListener("change", onExampleChange);
+	DOM.generateOutBtn.addEventListener('click', updateAllOutputs);
+	DOM.clearAllBtn.addEventListener("click", clearAll);
+	DOM.themeSelect.addEventListener("change", onThemeChange);
+	DOM.downloadMdBtn.addEventListener("click", onDownloadMarkdown);
+	DOM.downloadSvgBtn.addEventListener("click", onDownloadSVG);
+
+	document.body.addEventListener("dblclick", onBodyDoubleClick);
+}
+
+function onDslInputChange() {
 	if (!userEdited) {
 		userEdited = true;
-		clearOutputsBeforeUserUpdate();
-		hasClearedAfterEdit = true;
+		clearOutputs();
 	}
 
-	if (liveUpdateCheckbox.checked) {
+	if (DOM.liveUpdateCheckbox.checked) {
 		clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(() => {
-			updateAllOutputs();
-		}, 500);
+		debounceTimer = setTimeout(updateAllOutputs, 500);
 	}
-});
+}
 
-// Tab support inside DSL input
-dslInput.addEventListener("keydown", e => {
+function onDslInputKeyDown(e) {
 	if (e.key === "Tab") {
 		e.preventDefault();
-		const start = dslInput.selectionStart;
-		const end = dslInput.selectionEnd;
-		dslInput.value = dslInput.value.substring(0, start) + "  " + dslInput.value.substring(end);
-		dslInput.selectionStart = dslInput.selectionEnd = start + 2;
+		const start = DOM.dslInput.selectionStart;
+		const end = DOM.dslInput.selectionEnd;
+		DOM.dslInput.value = DOM.dslInput.value.substring(0, start) + "  " + DOM.dslInput.value.substring(end);
+		DOM.dslInput.selectionStart = DOM.dslInput.selectionEnd = start + 2;
 	}
-});
+}
 
-// Example selection
-exampleSelect.addEventListener("change", () => {
-	const selectedIndex = parseInt(exampleSelect.value, 10);
-	const selectedExample = examples[ selectedIndex ];
-	dslInput.value = selectedExample;
-
+function onExampleChange() {
+	const idx = parseInt(DOM.exampleSelect.value, 10);
+	DOM.dslInput.value = examples[ idx ];
 	userEdited = false;
-	hasClearedAfterEdit = false;
-
 	updateAllOutputs();
-});
+}
 
-// Manual update button
-document.getElementById('generate-out-btn').addEventListener('click', () => {
-	updateAllOutputs();
-});
-
-// Clear All button
-clearAllBtn.addEventListener("click", clearAll);
-
-// Theme selector
-themeSelect.addEventListener("change", () => {
+function onThemeChange() {
 	document.body.className = "";
-	document.body.classList.add(themeSelect.value);
-});
+	document.body.classList.add(DOM.themeSelect.value);
+}
 
-// Download Markdown button
-downloadMdBtn.addEventListener("click", () => {
+function onDownloadMarkdown() {
 	try {
-		const dslText = dslInput.value.trim();
+		const dslText = DOM.dslInput.value.trim();
 
-		// Read checkboxes once
+		// Read which outputs to include
 		const includeDsl = document.getElementById("include-dsl")?.checked ?? false;
 		const includeJson = document.getElementById("include-json")?.checked ?? false;
 		const includeMermaid = document.getElementById("include-mermaid")?.checked ?? false;
@@ -239,29 +218,18 @@ downloadMdBtn.addEventListener("click", () => {
 
 		const json = includeJson ? JSON.stringify(parsedDSL, null, 2) : null;
 		const mermaid = includeMermaid ? generateMermaid(parsedDSL) : null;
-		const js = includeJs ? generateJS(parsedDSL) : null;
+		const js = includeJs ? generateJS(parsedDSL, enableLogging) : null;
 
-		const markdown = generateMarkdown({
-			dsl: dslText,
-			json,
-			mermaid,
-			js,
-		}, {
-			includeDsl,
-			includeJson,
-			includeMermaid,
-			includeJs,
-		});
-
+		const markdown = generateMarkdown({ dsl: dslText, json, mermaid, js }, { includeDsl, includeJson, includeMermaid, includeJs });
 		downloadFile("sketch-output.md", markdown);
+
 	} catch (err) {
 		setError(err.message);
 	}
-});
+}
 
-// Download SVG button
-downloadSvgBtn.addEventListener("click", () => {
-	const svgElement = diagramDiv.querySelector("svg");
+function onDownloadSVG() {
+	const svgElement = DOM.diagramDiv.querySelector("svg");
 	if (!svgElement) {
 		alert("No diagram to download!");
 		return;
@@ -287,11 +255,16 @@ downloadSvgBtn.addEventListener("click", () => {
 	a.click();
 	a.remove();
 	URL.revokeObjectURL(url);
-});
+}
+
+function onBodyDoubleClick(e) {
+	if (e.target.tagName === "PRE") {
+		e.target.classList.toggle("fullscreen-pre");
+	}
+}
 
 
 // === UTILITIES ===
-
 function generateMarkdown({ dsl, json, mermaid, js }, { includeDsl, includeJson, includeMermaid, includeJs }) {
 	let result = "";
 
@@ -300,15 +273,17 @@ function generateMarkdown({ dsl, json, mermaid, js }, { includeDsl, includeJson,
 	}
 
 	if (includeJson && json !== null) {
-		if (result.length > 0) result += "\n\n";
+		if (result.length) result += "\n\n";
 		result += `# Parsed JSON\n\`\`\`json\n${json}\n\`\`\``;
 	}
+
 	if (includeMermaid && mermaid !== null) {
-		if (result.length > 0) result += "\n\n";
+		if (result.length) result += "\n\n";
 		result += `# Mermaid Diagram\n\`\`\`mermaid\n${mermaid}\n\`\`\``;
 	}
+
 	if (includeJs && js !== null) {
-		if (result.length > 0) result += "\n\n";
+		if (result.length) result += "\n\n";
 		result += `# Generated JS\n\`\`\`js\n${js}\n\`\`\``;
 	}
 
@@ -328,15 +303,5 @@ function downloadFile(filename, content) {
 }
 
 
-// === ZOOM PRE BLOCKS ON DOUBLE CLICK ===
-// Set titles and event listener for all pre elements once at startup
-preElements.forEach(pre => {
-	pre.setAttribute("title", "Double-click to zoom in/out");
-});
-
-// Use event delegation for double click on any <pre> anywhere
-document.body.addEventListener("dblclick", e => {
-	if (e.target.tagName === "PRE") {
-		e.target.classList.toggle("fullscreen-pre");
-	}
-});
+// === START APP ===
+init();
