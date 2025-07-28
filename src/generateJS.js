@@ -73,33 +73,42 @@ function generateJS(data) {
 		const mods = method.modifiers || {};
 		const name = method.signature.split('(')[ 0 ];
 
-		// Clean parameter list without types
+		// Extract parameter list without types
 		const paramStrRaw = method.signature.match(/\(([^)]*)\)/)?.[ 1 ] || '';
 		const paramStrClean = paramStrRaw
 			.split(',')
-			.map(p => p.trim().split(':')[ 0 ].trim()) // Remove types here too
+			.map(p => p.trim().split(':')[ 0 ].trim())
 			.join(', ');
 
 		const fullSig = `${mods.static ? 'static ' : ''}${mods.private ? '#' : ''}${name}(${paramStrClean})`;
 
-		const bodyLines = method.body && method.body.trim() !== ''
-			? method.body.split('\n').map(line => line.trim())
-			: [];
+		// Prepare method body
+		let bodyLines;
+		if (mods.abstract) {
+			// Abstract method throws by default
+			bodyLines = [ `throw new Error("Method ${name}() must be implemented in child classes");` ];
+		} else if (method.body && method.body.trim() !== '') {
+			// Use given method body verbatim, trim each line for neatness
+			bodyLines = method.body.split('\n').map(line => line.trim());
+		} else {
+			// No body: emit TODO comment placeholder
+			bodyLines = [ `// TODO Implement ${name}` ];
+		}
 
+		// Extract param names for logging
 		const paramsForLog = extractParamNames(method.signature);
 		const paramList = paramsForLog.length ? ', ' + paramsForLog.join(', ') : '';
 
-		const body = mods.abstract
-			? [ `\t\tthrow new Error("Method ${name}() must be implemented in child classes");` ]
-			: [
-				`\t\tlog("Calling ${name} from ${className}"${paramList});`,
-				...(bodyLines.length > 0
-					? bodyLines.map(line => `\t\t${line}`)
-					: [ `\t\t// TODO Implement ${name}` ])
-			];
+		// Compose full method body with logging
+		const body = [
+			`\t\tlog("Calling ${name} from ${className}"${paramList});`,
+			...bodyLines.map(line => `\t\t${line}`)
+		];
 
 		return [ `\t${fullSig} {`, ...body, `\t}` ];
 	};
+
+
 
 	const renderClass = (className, cls) => {
 		const result = [];
@@ -152,6 +161,8 @@ function generateJS(data) {
 	Object.entries(data.classes).forEach(([ name, cls ]) => lines.push(...renderClass(name, cls)));
 	Object.entries(data.schemas).forEach(([ name, schema ]) => lines.push(...renderSchema(name, schema)));
 	data.functions.forEach(fn => lines.push(...renderGlobalFunction(fn)));
+
+
 
 	return lines.join('\n');
 }

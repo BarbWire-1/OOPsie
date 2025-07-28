@@ -82,7 +82,9 @@ function generateMermaid(data) {
 				const staticLabel = method.modifiers?.static ? "static " : "";
 				const abstractLabel = method.modifiers?.abstract ? "abstract " : "";
 
-				const sig = method.signature || "unnamed()";
+				// Strip method body indicator to avoid Mermaid syntax issues
+				const rawSig = method.signature || "unnamed()";
+				const sig = rawSig.split("{")[ 0 ].trim();
 
 				classLines.push(`  ${visibility} ${staticLabel}${abstractLabel}${sig}`);
 			}
@@ -160,6 +162,3 @@ function generateMermaid(data) {
 }
 
 export { generateMermaid };
-
-
-

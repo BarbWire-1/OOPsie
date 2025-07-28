@@ -2,12 +2,12 @@
 import { generateMermaid } from "./generateMermaid.js";
 import { generateJS } from "./generateJS.js";
 import { parseDSL } from "./dsl/parseDSL.js";
-import { game, game2, ttt, simpleSketch } from './testSketches/exampleSketches.js';
+import { examples } from './testSketches/exampleSketches.js';
 mermaid.initialize({ startOnLoad: false });
 
 
 // === STATE / DOM REFERENCES ===
-const examples = [ game, game2, ttt, simpleSketch ];
+
 
 // Cache DOM elements once here:
 const themeSelect = document.getElementById("theme-select");
@@ -29,7 +29,7 @@ const preElements = document.querySelectorAll("pre");
 
 // === STATE FLAGS ===
 let userEdited = false;
-let hasClearedAfterEdit = false;
+//let hasClearedAfterEdit = false;
 let debounceTimer;
 
 
@@ -41,7 +41,7 @@ examples.forEach((example, index) => {
 	exampleSelect.appendChild(option);
 });
 
-const defaultExampleIndex = 1;
+const defaultExampleIndex = 0;
 dslInput.value = examples[ defaultExampleIndex ];
 exampleSelect.value = defaultExampleIndex;
 updateAllOutputs();

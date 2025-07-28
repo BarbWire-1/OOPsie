@@ -1,3 +1,47 @@
+const syntaxExample =`ClassName:
+  props:
+    p privateProp: string = 'I"m a public string'
+   	publicProp: number = 0
+    s staticProp: boolean = true
+  methods:
+    publicMethod(message: string){
+			console.log( this.#privateProp, message )// indent body!
+			this.publicProp += 1
+			}
+    p privateMethod(secretCode: number)
+    a abstractMethod(times: number, flag: boolean)
+
+SubClassName > className:
+  props:
+    publicSubProp: number
+    p privateSubProp: string = "hidden"
+    s staticSubProp: number = 999
+  methods:
+    publicSubMethod(value: number): boolean
+    p privateSubMethod()
+    s staticSubMethod(config: object)
+
+AnotherClassName:
+  props:
+    publicRef: className
+    s staticConfigFlag: boolean = false
+  methods:
+    run()
+    p setup()
+    a createDefault(): anotherClassName
+
+schema schemaName:
+  props:
+    publicField: string
+    p privateField: number
+    s staticField: boolean = false
+
+functions:
+	globalFunction(username: string, age: number)
+	anotherGlobalFunction(key: string)
+	andTheLastOne(data: object): boolean
+
+`
 const game = `AnimationEngine:
 	props:
 		frameRate: number = 60
@@ -267,5 +311,4 @@ Weapon:
 	wound()
 	fight()`
 
-
-	export {game, game2, ttt, simpleSketch}
+export const examples = [ syntaxExample, game, game2, ttt, simpleSketch ]
