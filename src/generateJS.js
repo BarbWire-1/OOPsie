@@ -1,19 +1,20 @@
-function generateJS(data) {
+function generateJS(data, options = { enableLogging: true }) {
 	const lines = [];
 
 	// === Logger scaffold ===
-	const logger = [
-		`let logger = true;`,
-		`function log(message, ...args) {`,
-		`\tif (logger) {`,
-		`\t\tconst now = new Date();`,
-		`\t\tconst timestamp = now.toLocaleTimeString('en-US', { hour12: false });`,
-		`\t\tconsole.log(\`[\${timestamp}] \${message}\`, ...args);`,
-		`\t}`,
-		`}\n`
-	];
-
-	lines.push(...logger);
+	if (options.enableLogging) {
+		const logger = [
+			`let logger = true;`,
+			`function log(message, ...args) {`,
+			`\tif (logger) {`,
+			`\t\tconst now = new Date();`,
+			`\t\tconst timestamp = now.toLocaleTimeString('en-US', { hour12: false });`,
+			`\t\tconsole.log(\`[\${timestamp}] \${message}\`, ...args);`,
+			`\t}`,
+			`}\n`
+		];
+		lines.push(...logger);
+	}
 
 	// === Helpers ===
 	const getDefaultValue = (prop) => {
@@ -23,6 +24,21 @@ function generateJS(data) {
 		if (prop.default !== null) return prop.default;
 		if (/^[A-Z]/.test(prop.type)) return `new ${prop.type}()`;
 		return 'null';
+	};
+
+	const parseFunctionSignature = (signature) => {
+		const name = signature.split('(')[ 0 ].trim();
+		const rawParams = signature.match(/\(([^)]*)\)/)?.[ 1 ] || '';
+
+		const paramList = rawParams
+			.split(',')
+			.map(p => p.trim().split(':')[ 0 ].trim())
+			.filter(Boolean);
+
+		const paramStr = paramList.join(', ');
+		const logParamStr = paramList.length ? ', ' + paramList.join(', ') : '';
+
+		return { name, paramStr, logParamStr, paramList };
 	};
 
 	const renderPropDeclaration = (prop) => {
@@ -50,79 +66,49 @@ function generateJS(data) {
 		return `\t\tthis.${internalName} = args.${name} ?? ${defaultVal};`;
 	};
 
-
 	const renderPrivateMethodFields = (methods) =>
 		methods
 			.filter((m) => m.modifiers?.private)
 			.map((m) => {
-				const name = m.signature.split('(')[ 0 ];
+				const { name } = parseFunctionSignature(m.signature);
 				return `\t#${name};`;
 			});
 
-	// Clean param names by stripping out type annotations
-	const extractParamNames = (sig) => {
-		const match = sig.match(/\(([^)]*)\)/);
-		if (!match) return [];
-		return match[ 1 ]
-			.split(',')
-			.map(p => p.trim().split(':')[ 0 ].trim()) // Strip type after colon
-			.filter(Boolean);
-	};
-
 	const renderMethod = (method, className) => {
 		const mods = method.modifiers || {};
-		const name = method.signature.split('(')[ 0 ];
+		const { name, paramStr, logParamStr } = parseFunctionSignature(method.signature);
 
-		// Extract parameter list without types
-		const paramStrRaw = method.signature.match(/\(([^)]*)\)/)?.[ 1 ] || '';
-		const paramStrClean = paramStrRaw
-			.split(',')
-			.map(p => p.trim().split(':')[ 0 ].trim())
-			.join(', ');
+		const fullSig = `${mods.static ? 'static ' : ''}${mods.private ? '#' : ''}${name}(${paramStr})`;
 
-		const fullSig = `${mods.static ? 'static ' : ''}${mods.private ? '#' : ''}${name}(${paramStrClean})`;
-
-		// Prepare method body
 		let bodyLines;
 		if (mods.abstract) {
-			// Abstract method throws by default
 			bodyLines = [ `throw new Error("Method ${name}() must be implemented in child classes");` ];
 		} else if (method.body && method.body.trim() !== '') {
-			// Use given method body verbatim, trim each line for neatness
 			bodyLines = method.body.split('\n').map(line => line.trim());
 		} else {
-			// No body: emit TODO comment placeholder
 			bodyLines = [ `// TODO Implement ${name}` ];
 		}
 
-		// Extract param names for logging
-		const paramsForLog = extractParamNames(method.signature);
-		const paramList = paramsForLog.length ? ', ' + paramsForLog.join(', ') : '';
-
-		// Compose full method body with logging
-		const body = [
-			`\t\tlog("Calling ${name} from ${className}"${paramList});`,
-			...bodyLines.map(line => `\t\t${line}`)
-		];
+		const body = [];
+		if (options.enableLogging) {
+			body.push(`\t\tlog("Calling ${name} from ${className}"${logParamStr});`);
+		}
+		body.push(...bodyLines.map(line => `\t\t${line}`));
 
 		return [ `\t${fullSig} {`, ...body, `\t}` ];
 	};
-
-
 
 	const renderClass = (className, cls) => {
 		const result = [];
 		const base = cls.baseClass ? ` extends ${cls.baseClass}` : '';
 		result.push(`class ${className}${base} {`);
 
-		// Fields & Private Methods
 		cls.props.forEach(p => {
 			const decl = renderPropDeclaration(p);
 			if (decl) result.push(decl);
 		});
 		result.push(...renderPrivateMethodFields(cls.methods));
 
-		// Constructor
 		result.push(`\tconstructor(args = {}) {`);
 		if (cls.baseClass) result.push(`\t\tsuper(args);`);
 		cls.props.forEach(p => {
@@ -131,7 +117,6 @@ function generateJS(data) {
 		});
 		result.push(`\t}`);
 
-		// Methods
 		cls.methods.forEach(method => {
 			result.push(...renderMethod(method, className));
 		});
@@ -148,21 +133,25 @@ function generateJS(data) {
 	};
 
 	const renderGlobalFunction = (fn) => {
-		const name = typeof fn === 'string' ? fn.replace(/\(\)$/, '') : fn.name;
-		return [
-			`function ${name}() {`,
-			`\tlog("Calling ${name} from global function");`,
-			`\t// TODO Implement ${name}`,
-			`}\n`
-		];
+		const signature = typeof fn === 'string' ? fn : fn.name;
+		const { name, paramStr, logParamStr } = parseFunctionSignature(signature);
+
+		const body = typeof fn === 'object' && fn.body
+			? fn.body.split('\n').map(line => `\t${line.trim()}`)
+			: [ `\t// TODO Implement ${name}` ];
+
+		const result = [ `function ${name}(${paramStr}) {` ];
+		if (options.enableLogging) {
+			result.push(`\tlog("Calling ${name} from global function"${logParamStr});`);
+		}
+		result.push(...body, `}\n`);
+		return result;
 	};
 
 	// === Render All ===
 	Object.entries(data.classes).forEach(([ name, cls ]) => lines.push(...renderClass(name, cls)));
 	Object.entries(data.schemas).forEach(([ name, schema ]) => lines.push(...renderSchema(name, schema)));
 	data.functions.forEach(fn => lines.push(...renderGlobalFunction(fn)));
-
-
 
 	return lines.join('\n');
 }

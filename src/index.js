@@ -1,3 +1,6 @@
+
+// TODO implement enableLogging as a flag for JS
+
 // === IMPORTS ===
 import { generateMermaid } from "./generateMermaid.js";
 import { generateJS } from "./generateJS.js";
@@ -26,12 +29,22 @@ const clearedNotice = document.getElementById("cleared-notice");
 
 const preElements = document.querySelectorAll("pre");
 
+const enableLogsBtn = document.getElementById('addLogs');
+
+
+
 
 // === STATE FLAGS ===
 let userEdited = false;
-//let hasClearedAfterEdit = false;
+let hasClearedAfterEdit = false;
 let debounceTimer;
-
+let enableLogging = true;
+// enableLogsBtn.addEventListener('change', () => {
+// 	enableLogging = enableLogsBtn.checked;
+// 	console.log(enableLogging)
+// 	updateAllOutputs();
+// }
+// )
 
 // === INIT EXAMPLES SELECT OPTIONS ===
 examples.forEach((example, index) => {
