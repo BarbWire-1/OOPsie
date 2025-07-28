@@ -11,7 +11,7 @@ const syntaxExample =`ClassName:
     p privateMethod(secretCode: number)
     a abstractMethod(times: number, flag: boolean)
 
-SubClassName > className:
+SubClassName > ClassName:
   props:
     publicSubProp: number
     p privateSubProp: string = "hidden"
