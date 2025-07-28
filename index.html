@@ -83,11 +83,24 @@
 				<option value="theme-solarized">Solarized</option>
 			</select>
 
+			<h2>Select Output</h2>
+
+
 			<div class="button-group">
+				<button id="clear-all-btn">Clear All</button>
+
 				<button id="generate-out-btn">Generate Codes</button>
 				<button id="download-md-btn">Download Codes</button>
+<div id="download-options">
+	<label><input type="checkbox" id="include-json" checked> JSON</label>
+	<label><input type="checkbox" id="include-js" checked> JS</label>
+	<label><input type="checkbox" id="include-mermaid" checked> Mermaid</label>
+	<label><input type="checkbox" id="include-dsl" checked> DSL</label>
+</div>
 				<button id="download-svg-btn">Download Diagram</button>
 			</div>
+
+
 		</div>
 
 	</div>

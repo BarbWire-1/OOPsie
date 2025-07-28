@@ -510,6 +510,7 @@ button:hover {
 .button-group {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 
 
 	margin-bottom: 1em;
