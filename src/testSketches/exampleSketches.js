@@ -3,6 +3,7 @@ const syntaxExample =`ClassName:
     p privateProp: string = 'I"m a public string'
    	publicProp: number = 0
     s staticProp: boolean = true
+		composedElement: AnotherClassName
   methods:
     publicMethod(message: string){
 			console.log( this.#privateProp, message )// indent body!
