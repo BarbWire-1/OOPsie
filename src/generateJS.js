@@ -66,14 +66,6 @@ function generateJS(data,  enableLogging= true ) {
 		return `\t\tthis.${internalName} = args.${name} ?? ${defaultVal};`;
 	};
 
-	const renderPrivateMethodFields = (methods) =>
-		methods
-			.filter((m) => m.modifiers?.private)
-			.map((m) => {
-				const { name } = parseFunctionSignature(m.signature);
-				return `\t#${name};`;
-			});
-
 	const renderMethod = (method, className) => {
 		const mods = method.modifiers || {};
 		const { name, paramStr, logParamStr } = parseFunctionSignature(method.signature);
@@ -107,7 +99,7 @@ function generateJS(data,  enableLogging= true ) {
 			const decl = renderPropDeclaration(p);
 			if (decl) result.push(decl);
 		});
-		result.push(...renderPrivateMethodFields(cls.methods));
+
 
 		result.push(`\tconstructor(args = {}) {`);
 		if (cls.baseClass) result.push(`\t\tsuper(args);`);
