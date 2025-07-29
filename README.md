@@ -1,14 +1,21 @@
 # WIP
+# Readable on purpose. Practical in result.
+**OOPsie** keeps syntax simple, so your ideas stay front and center — while the tool handles code scaffolding, relationships, and output behind the scenes.
+
+It’s not flashy — it just works. Sketch with structure, get real output. That’s **OOPsie**.
+
 
 ## Check it out:
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8f737f09-6cf8-44bc-9d21-a855cccc8c28/deploy-status)](https://oopsiebarbl.netlify.app/)
 
+You can find a demo usage at [assets/demo.mp4](assets/demo.mp4).
+
 ## ✏️ Syntax Overview
 
 OOPsie is a lightweight, indentation-based DSL for sketching object-oriented designs. It emphasizes readability and fast structure definition for scaffolding and diagram generation.
 
-You can find a demo usage at [assets/demo.mp4](assets/demo.mp4).
+
 
 
 ### 📐 Indentation Rules
@@ -109,3 +116,25 @@ methods:
 ---
 
 > OOPsie is not for writing full implementations — it's for fast OOP scaffolding, diagramming, and code generation in multiple target formats (JS, UML, Mermaid, etc.).
+
+---
+🤝 Contributing & Feedback
+OOPsie is still a work in progress, and I'd love to hear your thoughts!
+
+Whether you want to:
+
+* Suggest syntax improvements
+* Add new output formats (like Python, TypeScript, C++, etc.)
+* Help with code generation, refactoring, or testing
+* Share feedback or criticisms
+* Extend the DSL for interfaces, mixins, or design patterns
+
+You're very welcome to join in!
+
+Feel free to:
+
+* Open an issue
+* Fork and submit a PR
+* Reach out with questions, feature ideas, or just say hi 🙂
+
+Let’s shape this together into something fun and useful for rapid OOP sketching.
